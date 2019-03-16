@@ -9,6 +9,12 @@ id_domain = {} #stores last domain user had open domain:open?
 id_loc = {}
 # domain mapped to list of ids that are there
 domain_id = {}
+curr_id = 0
+
+def gen_id():
+    last_id = curr_id
+    curr_id += 1
+    return last_id
 
 @application.route("/")
 def home():
@@ -17,7 +23,7 @@ def home():
 @application.route("/api/down/id", methods=['GET'])
 def fetch():
     # return json!
-    return json.dumps({'id': "someid"})
+    return json.dumps({'id': gen_id()})
 
 @application.route("/api/up/loc", methods=['POST'])
 def location():
@@ -43,6 +49,7 @@ def open():
         id_domain[id] = "{}.{}".format(domain, "open")
         if domain in domain_id:
             domain_id[domain].append(id)
+            set(domain_id[domain])
         else:
             domain_id[domain] = [id]
     else:
