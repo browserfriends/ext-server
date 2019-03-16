@@ -5,7 +5,7 @@ HERES SOME STATS <br>
 {% endfor %}
 <br>
 {% for key in id_loc.keys() %}
-  {{ key }}:{{id_loc[key]}}
+  {{ key }}:{{id_loc[key][0]}}, {{id_loc[key][1]}}
 {% endfor %}
 <br>
 {% for key in domain_id.keys() %}
