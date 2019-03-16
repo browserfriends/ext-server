@@ -23,6 +23,8 @@ def clean_clients():
         del id_time[v]
         if v in id_domain:
             del id_domain[v]
+        if v in id_loc:
+            del id_loc[v]
 
     for key, value in domain_id.items():
         domain_id[key] = [i for i in value if i not in victims]
@@ -32,7 +34,7 @@ def gen_id():
     global curr_id
     last_id = curr_id
     curr_id += 1
-    return last_id
+    return str(last_id)
 
 @application.route("/")
 def home():
