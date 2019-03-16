@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import json
+import random
 
 application = Flask(__name__)
 
@@ -26,6 +27,14 @@ def fetch():
     # return json!
     new_id = gen_id()
     return json.dumps({'id': new_id})
+
+@application.route("/api/down/control", methods=['GET'])
+def command():
+    # return json!
+    if random.randint(0, 10) > 5:
+        return json.dumps({'type': 'notify', 'title': 'This is the server.', 'content': "You are client " + request.args.get('id')})
+    else:
+        return json.dumps({'type': 'nop'})
 
 @application.route("/api/up/loc", methods=['POST'])
 def location():
