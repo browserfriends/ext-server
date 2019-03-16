@@ -21,8 +21,9 @@ def fetch():
 def location():
     if request.method == "POST":
         req = request.json
-        id = req.form['id']
-        loc = req.form['location']
+        id = req['id']
+        lat = req['lat']
+        long = req['long']
         id_loc[id] = loc
     else:
         return "Invalid loc request"
