@@ -23,7 +23,7 @@ def open():
         domain = request.form['url']
         if id in id_domain:
             # update
-            print "yo wtf"
+            print("yo wtf")
     else:
         return "Invalid open request"
     return "open!"
