@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import json
 
 application = Flask(__name__)
 
@@ -14,13 +15,14 @@ def home():
 @application.route("/api/down/id", methods=['GET'])
 def fetch():
     # return json!
-    return "down"
+    return json.dumps({'id': "someid"})
 
 @application.route("/api/up/loc", methods=['POST'])
 def location():
     if request.method == "POST":
-        id = request.form['id']
-        loc = request.form['location']
+        req = request.json
+        id = req.form['id']
+        loc = req.form['location']
         id_loc[id] = loc
     else:
         return "Invalid loc request"
