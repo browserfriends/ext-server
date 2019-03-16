@@ -24,6 +24,7 @@ def clean_clients():
         if v in id_domain:
             del id_domain[v]
 
+    # url -> ids
     for key, value in domain_id.items():
         domain_id[key] = [i for i in value if i not in victims]
 
@@ -88,8 +89,9 @@ def open():
 @application.route("/api/up/close", methods=['POST'])
 def close():
     if request.method == "POST":
-        id = request.form['id']
-        domain = request.form['url']
+        req = request.json
+        id = req['id']
+        domain = req['url']
         id_domain[id] = "{}.{}".format(domain, "closed")
     else:
         return "Invalid open request"
