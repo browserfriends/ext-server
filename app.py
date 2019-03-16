@@ -17,9 +17,10 @@ id_time = {}
 curr_id = 0
 
 def find5(src):
-    id2loc = id_loc.items() # list of tuples: (id, (lat, long))
-    sorted(id2loc, cmp=lambda loc: geodesic(src, loc))
-    ret = [i for i,d in id2loc]
+    id2loc = id_loc.items()     # list of tuples: (id, (lat, long))
+    sorted(id2loc, key=lambda loc: geodesic(id_loc[src], loc[1]).meters)
+    ret = [i for i, d in id2loc if geodesic(id_loc[src], d).meters < 1000 and not i == src]
+
     if len(id2loc) < 5:
         return ret
     else:
@@ -27,7 +28,6 @@ def find5(src):
 
 def clean_clients():
     victims = [i for (i, t) in id_time.items() if t + 15 < time.time()]
-    print(victims)
     for v in victims:
         del id_time[v]
         if v in id_domain:
@@ -61,7 +61,7 @@ def command():
     # return json!
     id_time[request.args.get('id')] = time.time()
     clean_clients()
-    if random.randint(0, 10) > 5:
+    if random.randint(0, 10) > 8:
         return json.dumps({'type': 'notify', 'title': 'This is the server.', 'content': "You are client " + request.args.get('id')})
     else:
         return json.dumps({'type': 'nop'})
@@ -81,12 +81,9 @@ def location():
 
 @application.route("/api/friends") #this should be able to refer to the client's ID
 def friends():
-    if request.method == "POST":
-        req = request.json
-        id = req['id']
-        my_loc = id_loc[id]
-        nearby_ids = find5(my_loc)
-        return render_template("find_friends.html", nearby_ids=nearby_ids)
+    if request.method == "GET":
+        nearby_ids = find5(request.args.get('id'))
+        return json.dumps(nearby_ids)
     else:
         return "Invalid friendship request"
 
@@ -103,7 +100,7 @@ def open():
             domain_id[domain] = []
         curr = domain_id[domain]
         curr.append(id)
-        curr = set(curr)
+        curr = list(set(curr))
         domain_id[domain] = curr
         return "Invalid open request"
     return "open!"
