@@ -7,6 +7,8 @@ application = Flask(__name__)
 # id:curr_loc
 id_domain = {} #stores last domain user had open domain:open?
 id_loc = {}
+# domain mapped to list of ids that are there
+domain_id = {}
 
 @application.route("/")
 def home():
@@ -25,7 +27,7 @@ def location():
         id = req['id']
         lat = req['lat']
         lon = req['lon']
-        id_loc[id] = lon
+        id_loc[id] = (lat, lon)
     else:
         return "Invalid loc request"
     return "loc!"
@@ -34,10 +36,15 @@ def location():
 def open():
     # add new id/domain pair to the map
     if request.method == "POST":
-        print(request.form)
-        id = request.form['id']
-        domain = request.form['url']
+        req = request.json
+        print(req)
+        id = req['id']
+        domain = req['url']
         id_domain[id] = "{}.{}".format(domain, "open")
+        if domain in domain_id:
+            domain_id[domain].append(id)
+        else:
+            domain_id[domain] = [id]
     else:
         return "Invalid open request"
     return "open!"
@@ -54,7 +61,7 @@ def close():
 
 @application.route("/view-stats")
 def view():
-    return render_template("debug.html", id_domain=id_domain, id_loc=id_loc)
+    return render_template("debug.html", id_domain=id_domain, id_loc=id_loc, domain_id=domain_id)
 
 if __name__ == "__main__":
     application.run(debug=True)
