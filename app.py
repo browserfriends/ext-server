@@ -18,9 +18,10 @@ curr_id = 0
 
 def clean_clients():
     victims = [i for (i, t) in id_time.items() if t + 15 < time.time()]
+    print(victims)
     for v in victims:
         del id_time[v]
-        if id in id_domain:
+        if v in id_domain:
             del id_domain[v]
 
     for key, value in domain_id.items():
