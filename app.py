@@ -24,7 +24,7 @@ def location():
         print(req)
         id = req['id']
         lat = req['lat']
-        long = req['long']
+        long = req['lon']
         id_loc[id] = loc
     else:
         return "Invalid loc request"
