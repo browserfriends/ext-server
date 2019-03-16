@@ -75,12 +75,12 @@ def open():
         id = req['id']
         domain = req['url']
         id_domain[id] = "{}.{}".format(domain, "open")
-        if domain in domain_id:
-            domain_id[domain].append(id)
-            set(domain_id[domain])
-        else:
-            domain_id[domain] = [id]
-    else:
+        if not domain in domain_id:
+            domain_id[domain] = []
+        curr = domain_id[domain]
+        curr.append(id)
+        curr = set(curr)
+        domain_id[domain] = curr
         return "Invalid open request"
     return "open!"
 
