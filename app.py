@@ -4,7 +4,7 @@ application = Flask(__name__)
 
 # domain:list of ids
 # id:curr_loc
-id_domain = {}
+id_domain = {} #stores last domain user had open domain:open?
 id_loc = {}
 
 @application.route("/")
@@ -21,17 +21,24 @@ def open():
     if request.method == "POST":
         id = request.form['id']
         domain = request.form['url']
-        if id in id_domain:
-            # update
-            print("yo wtf")
+        id_domain[id] = "{}.{}".format(domain, "open")
     else:
         return "Invalid open request"
     return "open!"
 
 @application.route("/api/up/close", methods=['POST'])
-    # add to db
 def close():
+    if request.method == "POST":
+        id = request.form['id']
+        domain = request.form['url']
+        id_domain[id] = "{}.{}".format(domain, "closed")
+    else:
+        return "Invalid open request"
     return "close!"
+
+@application.route("/view-stats")
+def view():
+    return render_template("debug.html", id_domain=id_domain, id_loc=id_loc)
 
 if __name__ == "__main__":
     application.run(debug=True)
