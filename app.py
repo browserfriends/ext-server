@@ -12,6 +12,7 @@ domain_id = {}
 curr_id = 0
 
 def gen_id():
+    global curr_id
     last_id = curr_id
     curr_id += 1
     return last_id
@@ -23,7 +24,8 @@ def home():
 @application.route("/api/down/id", methods=['GET'])
 def fetch():
     # return json!
-    return json.dumps({'id': gen_id()})
+    new_id = gen_id()
+    return json.dumps({'id': new_id})
 
 @application.route("/api/up/loc", methods=['POST'])
 def location():
