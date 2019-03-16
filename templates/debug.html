@@ -1,9 +1,9 @@
 <html>
-{% for key, val in id_domain %}
-  {{ key }}: {{ val }}
+{% for key in id_domain.keys() %}
+  {{ key }}:{{id_domain[key]}}
 {% endfor %}
 
-{% for key, val in id_loc %}
- {{ key }}: {{ val }}
+{% for key in id_loc.keys() %}
+  {{ key }}:{{id_loc[key]}}
 {% endfor %}
 </html>
