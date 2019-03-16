@@ -51,7 +51,7 @@ def open():
         id_domain[id] = "{}.{}".format(domain, "open")
         if domain in domain_id:
             domain_id[domain].append(id)
-            set(domain_id[domain])
+            domain_id[domain] = set(domain_id[domain])
         else:
             domain_id[domain] = [id]
     else:
