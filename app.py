@@ -21,6 +21,7 @@ def fetch():
 def location():
     if request.method == "POST":
         req = request.json
+        print(req)
         id = req['id']
         lat = req['lat']
         long = req['long']
