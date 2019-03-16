@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import json
 import random
 import time
+from geopy.distance import geodesic
 
 application = Flask(__name__)
 
@@ -15,6 +16,14 @@ domain_id = {}
 id_time = {}
 curr_id = 0
 
+def find5(src):
+    id2loc = id_loc.items() # list of tuples: (id, (lat, long))
+    sorted(id2loc, cmp=lambda loc: geodesic(src, loc))
+    ret = [i for i,d in id2loc]
+    if len(id2loc) < 5:
+        return ret
+    else:
+        return ret[:5]
 
 def clean_clients():
     victims = [i for (i, t) in id_time.items() if t + 15 < time.time()]
@@ -69,6 +78,17 @@ def location():
     else:
         return "Invalid loc request"
     return "loc!"
+
+@application.route("/api/friends") #this should be able to refer to the client's ID
+def friends():
+    if request.method == "POST":
+        req = request.json
+        id = req['id']
+        my_loc = id_loc[id]
+        nearby_ids = find5(my_loc)
+        return render_template("find_friends.html", nearby_ids=nearby_ids)
+    else:
+        return "Invalid friendship request"
 
 @application.route("/api/up/open", methods=['POST'])
 def open():
