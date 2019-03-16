@@ -13,6 +13,7 @@ def home():
 
 @application.route("/api/down/id", methods=['GET'])
 def fetch():
+    # return json!
     return "down"
 
 @application.route("/api/up/open", methods=['POST'])
