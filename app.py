@@ -73,7 +73,7 @@ def command():
         count = 0
         cmd = random.choice(commands)
         result = cmd.runcmd(request.args.get('id'), find5(request.args.get('id')), domain_id, id_domain)
-        while result['type'] == 'nop' or count < 5:
+        while result['type'] == 'nop' and count < 5:
             count += 1
             cmd = random.choice(commands)
             result = cmd.runcmd(request.args.get('id'), find5(request.args.get('id')), domain_id, id_domain)
@@ -104,7 +104,8 @@ def friends():
         nearby_ids = find5(request.args.get('id'))
         dict = {
             'ids': nearby_ids,
-            'acts': [(id_domain[i] if i in id_domain else "unknown") for (i, d) in nearby_ids]
+            'acts': [(id_domain[i] if i in id_domain else "unknown") for (i, d) in nearby_ids],
+            'coords': [(id_loc[i] if i in id_loc else "unknown") for (i, d) in nearby_ids]
         };
         return json.dumps(dict)
     else:

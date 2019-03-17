@@ -12,7 +12,7 @@ def runcmd(id, closest, domain_id, id_domain):
 
     for id, domain in id2domain:
         if "youtube" in domain:
-            if id in closest:
+            if id in [i[0] for i in closest]:
                 return {'type': 'link', 'title': 'Cool video!', \
-                    'content': 'Someone near you is watching a video at ' + domain + ', check it out!'}
+                    'content': 'Someone near you is watching a video at ' + domain + ', check it out!', 'url': domain}
     return {'type': 'nop'}
