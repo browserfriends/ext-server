@@ -28,7 +28,7 @@ def find5(src):
         return []
     id2loc = id_loc.items()     # list of tuples: (id, (lat, long))
     sorted(id2loc, key=lambda loc: geodesic(id_loc[src], loc[1]).meters)
-    ret = [(i, geodesic(id_loc[src], d).meters) for i, d in id2loc if geodesic(id_loc[src], d).meters < 1000 and not i == src]
+    ret = [(i, geodesic(id_loc[src], d).meters) for i, d in id2loc if geodesic(id_loc[src], d).meters < 1000 and not int(i) == int(src)]
     if len(id2loc) < 5:
         return ret
     else:
