@@ -24,9 +24,7 @@ id_time = {}
 curr_id = 0
 
 def find5(src):
-    print(id_loc)
     if src not in id_loc:
-        print(src)
         return []
     id2loc = id_loc.items()     # list of tuples: (id, (lat, long))
     sorted(id2loc, key=lambda loc: geodesic(id_loc[src], loc[1]).meters)
@@ -92,7 +90,6 @@ def command():
 def location():
     if request.method == "POST":
         req = request.json
-        print(req)
         id = req['id']
         lat = req['lat']
         lon = req['lon']
@@ -118,7 +115,6 @@ def open():
     # add new id/domain pair to the map
     if request.method == "POST":
         req = request.json
-        print(req)
         id = req['id']
         domain = req['url']
         full = req['fullURL']
@@ -138,6 +134,8 @@ def close():
         req = request.json
         id = req['id']
         domain = req['url']
+        if domain in domain_id:
+            domain_id[domain].remove(id)
         id_domain[id] = "{}.{}".format(domain, "closed")
     else:
         return "Invalid open request"
