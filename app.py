@@ -7,7 +7,8 @@ from geopy.distance import geodesic
 from commands import sharedsite
 
 commands = [
-    sharedsite
+    sharedsite,
+    youtube
 ]
 
 application = Flask(__name__)
@@ -71,8 +72,18 @@ def command():
     id_time[request.args.get('id')] = time.time()
     clean_clients()
     if random.randint(0, 30) > 20:
+        count = 0
         cmd = random.choice(commands)
-        return json.dumps(cmd.runcmd(request.args.get('id'), find5(request.args.get('id')), domain_id, id_domain))
+        result = cmd.runcmd(request.args.get('id'), find5(request.args.get('id')), domain_id, id_domain)
+        while result['type'] == 'nop' or count < 5:
+            count += 1
+            cmd = random.choice(commands)
+            result = cmd.runcmd(request.args.get('id'), find5(request.args.get('id')), domain_id, id_domain)
+        return json.dumps(result)
+        # do a while loop, try to get it to not be nop
+        # also extract actual url from id_domain dict
+
+        # return json.dumps(cmd.runcmd(request.args.get('id'), find5(request.args.get('id')), domain_id, id_domain))
         # return json.dumps({'type': 'notify', 'title': 'This is the server.', 'content': "You are client " + request.args.get('id')})
     else:
         return json.dumps({'type': 'nop'})

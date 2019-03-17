@@ -20,3 +20,4 @@ def runcmd(id, closest, domain_id, id_domain):
                 if len(close) > 0:
                     return {'type': 'notify', 'title': 'Shared site!', 'content': "Someone near you is also using " + domain + ", you should go find them!"}
     return {'type': 'nop'}
+
