@@ -4,7 +4,7 @@ import random
 import time
 from geopy.distance import geodesic
 
-from commands import sharedsite
+from commands import sharedsite, youtube
 
 commands = [
     sharedsite,
