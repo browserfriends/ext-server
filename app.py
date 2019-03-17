@@ -23,9 +23,7 @@ id_time = {}
 curr_id = 0
 
 def find5(src):
-    print(id_loc)
     if src not in id_loc:
-        print(src)
         return []
     id2loc = id_loc.items()     # list of tuples: (id, (lat, long))
     sorted(id2loc, key=lambda loc: geodesic(id_loc[src], loc[1]).meters)
@@ -45,8 +43,8 @@ def clean_clients():
             del id_loc[v]
 
     # url -> ids
-    #for key, value in domain_id.items():
-    #    domain_id[key] = [i for i in value if i not in victims]
+    for key, value in domain_id.items():
+        domain_id[key] = [i for i in value if i not in victims]
 
 
 def gen_id():
@@ -81,7 +79,6 @@ def command():
 def location():
     if request.method == "POST":
         req = request.json
-        print(req)
         id = req['id']
         lat = req['lat']
         lon = req['lon']
@@ -107,7 +104,6 @@ def open():
     # add new id/domain pair to the map
     if request.method == "POST":
         req = request.json
-        print(req)
         id = req['id']
         domain = req['url']
         full = req['fullURL']
@@ -135,6 +131,9 @@ def close():
 @application.route("/view-stats")
 def view():
     clean_clients()
+    print(id_domain)
+    print(id_loc)
+    print(domain_id)
     return render_template("debug.html", id_domain=id_domain, id_loc=id_loc, domain_id=domain_id)
 
 if __name__ == "__main__":
