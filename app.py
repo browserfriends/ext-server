@@ -45,8 +45,8 @@ def clean_clients():
             del id_loc[v]
 
     # url -> ids
-    for key, value in domain_id.items():
-        domain_id[key] = [i for i in value if i not in victims]
+    #for key, value in domain_id.items():
+    #    domain_id[key] = [i for i in value if i not in victims]
 
 
 def gen_id():
