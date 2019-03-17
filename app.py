@@ -123,6 +123,8 @@ def close():
         req = request.json
         id = req['id']
         domain = req['url']
+        if domain in domain_id:
+            domain_id[domain].remove(id)
         id_domain[id] = "{}.{}".format(domain, "closed")
     else:
         return "Invalid open request"
@@ -131,9 +133,6 @@ def close():
 @application.route("/view-stats")
 def view():
     clean_clients()
-    print(id_domain)
-    print(id_loc)
-    print(domain_id)
     return render_template("debug.html", id_domain=id_domain, id_loc=id_loc, domain_id=domain_id)
 
 if __name__ == "__main__":
