@@ -4,6 +4,12 @@ import random
 import time
 from geopy.distance import geodesic
 
+from commands import sharedsite
+
+commands = [
+    sharedsite
+]
+
 application = Flask(__name__)
 
 # domain:list of ids
@@ -17,6 +23,10 @@ id_time = {}
 curr_id = 0
 
 def find5(src):
+    print(id_loc)
+    if src not in id_loc:
+        print(src)
+        return []
     id2loc = id_loc.items()     # list of tuples: (id, (lat, long))
     sorted(id2loc, key=lambda loc: geodesic(id_loc[src], loc[1]).meters)
     ret = [(i, geodesic(id_loc[src], d).meters) for i, d in id2loc if geodesic(id_loc[src], d).meters < 1000 and not i == src]
@@ -60,8 +70,10 @@ def command():
     # return json!
     id_time[request.args.get('id')] = time.time()
     clean_clients()
-    if random.randint(0, 10) > 8:
-        return json.dumps({'type': 'notify', 'title': 'This is the server.', 'content': "You are client " + request.args.get('id')})
+    if random.randint(0, 30) > 20:
+        cmd = random.choice(commands)
+        return json.dumps(cmd.runcmd(request.args.get('id'), find5(request.args.get('id')), domain_id, id_domain))
+        # return json.dumps({'type': 'notify', 'title': 'This is the server.', 'content': "You are client " + request.args.get('id')})
     else:
         return json.dumps({'type': 'nop'})
 
@@ -98,7 +110,8 @@ def open():
         print(req)
         id = req['id']
         domain = req['url']
-        id_domain[id] = "{}.{}".format(domain, "open")
+        full = req['fullURL']
+        id_domain[id] = "{}.{}".format(full, "open")
         if not domain in domain_id:
             domain_id[domain] = []
         curr = domain_id[domain]
