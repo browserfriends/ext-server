@@ -118,7 +118,7 @@ def open():
         id = req['id']
         domain = req['url']
         full = req['fullURL']
-        id_domain[id] = "{}.{}".format(full, "open")
+        id_domain[id] = full
         if not domain in domain_id:
             domain_id[domain] = []
         curr = domain_id[domain]
@@ -136,7 +136,6 @@ def close():
         domain = req['url']
         if domain in domain_id:
             domain_id[domain].remove(id)
-        id_domain[id] = "{}.{}".format(domain, "closed")
     else:
         return "Invalid open request"
     return "close!"

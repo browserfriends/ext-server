@@ -6,11 +6,11 @@ def dictToList(dict):
         l.append((domain, ids))
     return l
 
-def runcmd(id, closest, id_domain):
+def runcmd(id, closest, domain_id, id_domain):
     id2domain = dictToList(id_domain)
-    random.shuffle(li)
+    random.shuffle(id2domain)
 
-    for id, domain in id_domain:
+    for id, domain in id2domain:
         if "youtube" in domain:
             if id in closest:
                 return {'type': 'link', 'title': 'Cool video!', \
