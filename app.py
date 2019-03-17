@@ -19,8 +19,7 @@ curr_id = 0
 def find5(src):
     id2loc = id_loc.items()     # list of tuples: (id, (lat, long))
     sorted(id2loc, key=lambda loc: geodesic(id_loc[src], loc[1]).meters)
-    ret = [i for i, d in id2loc if geodesic(id_loc[src], d).meters < 1000 and not i == src]
-
+    ret = [(i, geodesic(id_loc[src], d).meters) for i, d in id2loc if geodesic(id_loc[src], d).meters < 1000 and not i == src]
     if len(id2loc) < 5:
         return ret
     else:
@@ -83,7 +82,11 @@ def location():
 def friends():
     if request.method == "GET":
         nearby_ids = find5(request.args.get('id'))
-        return json.dumps(nearby_ids)
+        dict = {
+            'ids': nearby_ids,
+            'acts': [(id_domain[i] if i in id_domain else "unknown") for (i, d) in nearby_ids]
+        };
+        return json.dumps(dict)
     else:
         return "Invalid friendship request"
 
